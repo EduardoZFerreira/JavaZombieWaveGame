@@ -4,6 +4,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import com.boss.entities.Entity;
 import com.boss.entities.Player;
 import com.boss.graphics.Spritesheet;
 
-public class Game extends Canvas implements Runnable{
+public class Game extends Canvas implements Runnable, KeyListener{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -33,25 +35,29 @@ public class Game extends Canvas implements Runnable{
 	public List<Entity> entities;
 	public Spritesheet spritesheet;
 	
+	private Player player;
+	
 	public Game() {
+		addKeyListener(this);
 		initFrame();	
 		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/img/spritesheet.png");
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		
-		Player player = new Player(0, 0, 16, 16, spritesheet.getSprite(2 * 16, 0 * 16, 16, 16));
+		player = new Player(0, 0, 16, 16, spritesheet.getSprite(2 * 16, 0 * 16, 16, 16));
 		entities.add(player);
 	}
 	
 	public void initFrame() {
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		frame = new JFrame("GAME #1");
-		frame.add(this);
 		frame.setResizable(false);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.add(this);
+		frame.pack();
 		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
+		
 	}
 	
 	public synchronized void start() {
@@ -119,5 +125,45 @@ public class Game extends Canvas implements Runnable{
 			}
 		}
 		stop();
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			player.setRight(true);
+			player.setLeft(false);
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			player.setRight(false);
+			player.setLeft(true);
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			player.setUp(true);
+			player.setDown(false);
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			player.setUp(false);
+			player.setDown(true);
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			player.setRight(false);
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			player.setLeft(false);
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			player.setUp(false);
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			player.setDown(false);
+		}
+		
 	}
 }

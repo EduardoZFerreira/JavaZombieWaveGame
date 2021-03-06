@@ -5,9 +5,10 @@ import java.awt.image.BufferedImage;
 
 public class Entity {
 
-	private int width, heigth, x, y;
+	protected int width, heigth;
+	protected double x, y;
 	
-	private BufferedImage sprite;
+	protected BufferedImage sprite;
 	
 	public Entity(int x, int y, int width, int heigth, BufferedImage sprite) {
 		setX(x);
@@ -33,19 +34,19 @@ public class Entity {
 		this.heigth = heigth;
 	}
 
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 
-	public void setX(int x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 
-	public void setY(int y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 
@@ -59,7 +60,7 @@ public class Entity {
 	
 	public void render(Graphics g)
 	{
-		g.drawImage(sprite, getX(), getY(), null);
+		g.drawImage(sprite, (int)getX(), (int)getY(), null);
 	}
 	
 	public void tick() {
