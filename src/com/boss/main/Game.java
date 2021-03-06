@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import com.boss.entities.Entity;
 import com.boss.entities.Player;
 import com.boss.graphics.Spritesheet;
+import com.boss.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener{
 	
@@ -23,29 +24,33 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	
 	public static JFrame frame;
 	
-	private final int WIDTH = 160;
-	private final int HEIGHT = 120;
-	private final int SCALE = 4;
+	private final int WIDTH = 320; // 240
+	private final int HEIGHT = 240; // 160
+	private final int SCALE = 2; // 3
 	private Thread thread;
 	private boolean isRunning;
 	
 	
 	private BufferedImage image;
 	
-	public List<Entity> entities;
+	public static List<Entity> entities;
 	public static Spritesheet spritesheet;
+	public static World world;
 	
-	private Player player;
+	public static Player player;
 	
 	public Game() {
 		addKeyListener(this);
-		initFrame();	
+		initFrame();
+		
 		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/img/spritesheet.png");
-		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(2 * 16, 0 * 16, 16, 16));
 		entities.add(player);
+		world = new World("/img/map.png");
+		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		
+		
 	}
 	
 	public void initFrame() {
@@ -95,9 +100,9 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			return;
 		}
 		Graphics g = image.getGraphics();
-		g.setColor(new Color(255, 150, 19));
+		g.setColor(new Color(0, 0, 0));
 		g.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
-		
+		world.render(g);
 		for(int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.render(g);

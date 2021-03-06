@@ -3,12 +3,19 @@ package com.boss.entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import com.boss.main.Game;
+
 public class Entity {
 
-	protected int width, heigth;
+	protected int width, height;
 	protected double x, y;
 	
 	protected BufferedImage sprite;
+	
+	public static BufferedImage LIFEPACK_EN = Game.spritesheet.getSprite(6 * 16, 0, 16, 16);
+	public static BufferedImage WEAPON_EN = Game.spritesheet.getSprite(7 * 16, 0, 16, 16);
+	public static BufferedImage BULLET_EN = Game.spritesheet.getSprite(6 * 16, 16, 16, 16);
+	public static BufferedImage ENEMY_EN = Game.spritesheet.getSprite(8 * 16, 0, 16, 16);
 	
 	public Entity(int x, int y, int width, int heigth, BufferedImage sprite) {
 		setX(x);
@@ -27,11 +34,11 @@ public class Entity {
 	}
 
 	public int getHeigth() {
-		return heigth;
+		return height;
 	}
 
 	public void setHeigth(int heigth) {
-		this.heigth = heigth;
+		this.height = heigth;
 	}
 
 	public double getX() {
