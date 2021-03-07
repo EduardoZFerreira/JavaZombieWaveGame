@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import com.boss.main.Game;
+import com.boss.world.Camera;
 
 public class Entity {
 
@@ -67,7 +68,7 @@ public class Entity {
 	
 	public void render(Graphics g)
 	{
-		g.drawImage(sprite, (int)getX(), (int)getY(), null);
+		g.drawImage(sprite, (int)getX() - Camera.x, (int)getY() - Camera.y, null);
 	}
 	
 	public void tick() {

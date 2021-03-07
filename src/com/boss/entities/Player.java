@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import com.boss.main.Game;
+import com.boss.world.Camera;
+import com.boss.world.World;
 
 public class Player extends Entity {
 
@@ -44,6 +46,9 @@ public class Player extends Entity {
 		moved = false;
 		move();
 		
+		// TODO: Move to camera class, review architecture
+		Camera.x = Camera.clamp((int)x - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
+		Camera.y = Camera.clamp((int)y - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
 	}
 	
 	public void render(Graphics g) {
@@ -66,13 +71,13 @@ public class Player extends Entity {
 	
 	public void animateMovement(Graphics g) {
 		if(dir == right_dir) {
-			g.drawImage(rightPlayerSprites[spriteAnimationIndex], (int)getX(), (int)getY(), null);
+			g.drawImage(rightPlayerSprites[spriteAnimationIndex], (int)getX() - Camera.x, (int)getY() - Camera.y, null);
 		} else if(dir == left_dir) {
-			g.drawImage(leftPlayerSprites[spriteAnimationIndex], (int)getX(), (int)getY(), null);
+			g.drawImage(leftPlayerSprites[spriteAnimationIndex], (int)getX() - Camera.x, (int)getY() - Camera.y, null);
 		} else if(dir == up_dir) {
-			g.drawImage(upPlayerSprites[spriteAnimationIndex], (int)getX(), (int)getY(), null);
+			g.drawImage(upPlayerSprites[spriteAnimationIndex], (int)getX() - Camera.x, (int)getY() - Camera.y, null);
 		} else if(dir == down_dir) {
-			g.drawImage(downPlayerSprites[spriteAnimationIndex], (int)getX(), (int)getY(), null);
+			g.drawImage(downPlayerSprites[spriteAnimationIndex], (int)getX() - Camera.x, (int)getY() - Camera.y, null);
 		} 
 	}
 	
