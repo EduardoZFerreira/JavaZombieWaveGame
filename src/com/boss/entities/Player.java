@@ -81,29 +81,31 @@ public class Player extends Entity {
 		} 
 	}
 	
+	
+	
 	public void move() {
-		if(isRight()) {
+		if(isRight() && World.isFree((int)(x + speed), (int)y)) {
 			moved = true;
 			dir = right_dir;
 			setX(getX() + speed);
-		} else if(isLeft()) {
+		} else if(isLeft() && World.isFree((int)(x - speed), (int)y)) {
 			moved = true;
 			dir = left_dir;
 			setX(getX() - speed);
 		}
 		
-		if(isUp()) {
+		if(isUp() && World.isFree((int)x, (int)(y - speed))) {
 			moved = true;
 			dir = up_dir;
 			setY(getY() - speed);
-		} else if(isDown()) {
+		} else if(isDown() && World.isFree((int)x, (int)(y + speed))) {
 			moved = true;
 			dir = !isRight() && !isLeft() ? down_dir : dir;
 			setY(getY() + speed);
 		}
 		increaseFrame();
 	}
-
+	
 	public boolean isRight() {
 		return right;
 	}
