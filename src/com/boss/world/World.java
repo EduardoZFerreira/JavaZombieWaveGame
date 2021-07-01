@@ -38,8 +38,9 @@ public class World {
 						Game.player.setX(xx * 16);
 						Game.player.setY(yy * 16);
 					} else if(color == 0xFFFF0000) {
-						// Enemy
-						Game.entities.add(new Enemy(xx * 16, yy * 16, 16, 16, Entity.ENEMY_EN));
+						Enemy enemy = new Enemy(xx * 16, yy * 16, 16, 16, Entity.ENEMY_EN);
+						Game.entities.add(enemy);
+						Game.enemies.add(enemy);
 						
 					}  else if(color == 0xFFFFC85B) {
 						// Weapon
