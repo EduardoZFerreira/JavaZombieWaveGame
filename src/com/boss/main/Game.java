@@ -30,7 +30,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public static final int WIDTH = 240; 
 	public static final int HEIGHT = 160;
-	public static final int SCALE = 3; 
+	public static final int SCALE = 3;
 	private Thread thread;
 	private boolean isRunning;
 	
@@ -64,19 +64,19 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 	
 	public static void load() {
-		entities = new ArrayList<Entity>();
-		enemies = new ArrayList<Enemy>();
-		gunshots = new ArrayList<Gunshot>();
+		entities = new ArrayList<>();
+		enemies = new ArrayList<>();
+		gunshots = new ArrayList<>();
 		spritesheet = new Spritesheet("/img/spritesheet.png");
 		ui = new UI();
-		player = new Player(0, 0, 16, 16, spritesheet.getSprite(2 * 16, 0 * 16, 16, 16));
+		player = new Player(0, 0, World.TILE_SIZE, World.TILE_SIZE, spritesheet.getSprite(2 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE));
 		entities.add(player);
 		world = new World("/img/map.png");
 	}
 	
 	public void initFrame() {
 		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-		frame = new JFrame("GAME #1");
+		frame = new JFrame("A M O G V S 2");
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(this);
@@ -115,7 +115,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		for (int i = 0; i < gunshots.size(); i++) {
 			gunshots.get(i).tick();
 		}
-		
+
+		Camera.followActor(player);
 	}
 	
 	public void render() {

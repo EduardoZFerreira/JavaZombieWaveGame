@@ -16,15 +16,15 @@ public class Entity {
 		
 	protected BufferedImage sprite;
 
-	protected int maskx = 0, masky = 0, maskw = 16, maskh = 16;
+	protected int maskx = 0, masky = 0, maskw = World.TILE_SIZE, maskh = World.TILE_SIZE;
 
-	public static BufferedImage LIFEPACK_EN = Game.spritesheet.getSprite(6 * 16, 0, 16, 16);
-	public static BufferedImage WEAPON_EN = Game.spritesheet.getSprite(7 * 16, 0, 16, 16);
-	public static BufferedImage BULLET_EN = Game.spritesheet.getSprite(6 * 16, 16, 16, 16);
-	public static BufferedImage ENEMY_EN = Game.spritesheet.getSprite(8 * 16, 0, 16, 16);
-	public static BufferedImage WEAPON_LEFT = Game.spritesheet.getSprite(7 * 16, 1 * 16, 16, 16);
-	public static BufferedImage WEAPON_UP = Game.spritesheet.getSprite(7 * 16, 2 * 16, 16, 16);
-	public static BufferedImage WEAPON_DOWN = Game.spritesheet.getSprite(7 * 16, 3 * 16, 16, 16);
+	public static BufferedImage LIFEPACK_EN = Game.spritesheet.getSprite(6 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE);
+	public static BufferedImage WEAPON_EN = Game.spritesheet.getSprite(7 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE);
+	public static BufferedImage BULLET_EN = Game.spritesheet.getSprite(6 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+	public static BufferedImage ENEMY_EN = Game.spritesheet.getSprite(8 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE);
+	public static BufferedImage WEAPON_LEFT = Game.spritesheet.getSprite(7 * World.TILE_SIZE, 1 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+	public static BufferedImage WEAPON_UP = Game.spritesheet.getSprite(7 * World.TILE_SIZE, 2 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+	public static BufferedImage WEAPON_DOWN = Game.spritesheet.getSprite(7 * World.TILE_SIZE, 3 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
 
 	public Entity(int x, int y, int width, int heigth, BufferedImage sprite) {
 		setX(x);

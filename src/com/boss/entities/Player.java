@@ -50,10 +50,10 @@ public class Player extends Entity {
 		downPlayerSprites = new BufferedImage[maxSprites];
 		
 		for(int i = 0; i < maxSprites; i++) {
-			downPlayerSprites[i] = Game.spritesheet.getSprite(2 * 16, i * 16, 16, 16);
-			upPlayerSprites[i] = Game.spritesheet.getSprite(3 * 16, i * 16, 16, 16);
-			rightPlayerSprites[i] = Game.spritesheet.getSprite(4 * 16, i * 16, 16, 16);
-			leftPlayerSprites[i] = Game.spritesheet.getSprite(5 * 16, i * 16, 16, 16);
+			downPlayerSprites[i] = Game.spritesheet.getSprite(2 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+			upPlayerSprites[i] = Game.spritesheet.getSprite(3 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+			rightPlayerSprites[i] = Game.spritesheet.getSprite(4 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+			leftPlayerSprites[i] = Game.spritesheet.getSprite(5 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
 		}
 	}
 	
@@ -67,9 +67,6 @@ public class Player extends Entity {
 		checkCollisionLifePack();
 		checkCollisionAmmo();
 		checkCollisionGun();
-		// TODO: Move to camera class, review architecture
-		Camera.x = Camera.clamp((int)x - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
-		Camera.y = Camera.clamp((int)y - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
 	}
 	
 	public void render(Graphics g) {
@@ -117,11 +114,11 @@ public class Player extends Entity {
 
 	public void checkCollisionGun() {
 		for (int i = 0; i < Game.entities.size(); i++) {
-			Entity atual = Game.entities.get(i);
-			if (atual instanceof Weapon) {
-				if (isColliding(this, atual)) {
+			Entity current = Game.entities.get(i);
+			if (current instanceof Weapon) {
+				if (isColliding(this, current)) {
 					hasGun = true;
-					Game.entities.remove(atual);
+					Game.entities.remove(current);
 				}
 			}
 		}
@@ -129,11 +126,11 @@ public class Player extends Entity {
 		
 	public void checkCollisionAmmo() {
 		for (int i = 0; i < Game.entities.size(); i++) {
-			Entity atual = Game.entities.get(i);
-			if (atual instanceof Bullet) {
-				if (isColliding(this, atual)) {
+			Entity current = Game.entities.get(i);
+			if (current instanceof Bullet) {
+				if (isColliding(this, current)) {
 					ammo += 10;
-					Game.entities.remove(atual);
+					Game.entities.remove(current);
 				}
 			}
 		}

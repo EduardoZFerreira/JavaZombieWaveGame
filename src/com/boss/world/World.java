@@ -26,32 +26,32 @@ public class World {
 			for(int xx = 0; xx < map.getWidth(); xx++) {
 				for(int yy = 0; yy < map.getHeight(); yy++) {
 					int color = pixels[ xx + (yy * map.getWidth())];
-					tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
+					tiles[xx + (yy * WIDTH)] = new FloorTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_FLOOR);
 					if(color == 0xFF000000) {
 						// Floor
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
+						tiles[xx + (yy * WIDTH)] = new FloorTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_FLOOR);
 					} else if(color == 0xFFFFFFFF) {
 						// Wall
-						tiles[xx + (yy * WIDTH)] = new WallTile(xx * 16, yy * 16, Tile.TILE_WALL);
+						tiles[xx + (yy * WIDTH)] = new WallTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_WALL);
 					} else if(color == 0xFF00137F) {
 						// Player
-						Game.player.setX(xx * 16);
-						Game.player.setY(yy * 16);
+						Game.player.setX(xx * TILE_SIZE);
+						Game.player.setY(yy * TILE_SIZE);
 					} else if(color == 0xFFFF0000) {
-						Enemy enemy = new Enemy(xx * 16, yy * 16, 16, 16, Entity.ENEMY_EN);
+						Enemy enemy = new Enemy(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.ENEMY_EN);
 						Game.entities.add(enemy);
 						Game.enemies.add(enemy);
 						
 					}  else if(color == 0xFFFFC85B) {
 						// Weapon
-						Game.entities.add(new Weapon(xx * 16, yy * 16, 16, 16, Entity.WEAPON_EN));
+						Game.entities.add(new Weapon(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.WEAPON_EN));
 						
 					} else if(color == 0xFFFF006E) {
 						// Lifepack
-						Game.entities.add(new Lifepack(xx * 16, yy * 16, 16, 16, Entity.LIFEPACK_EN));
+						Game.entities.add(new Lifepack(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.LIFEPACK_EN));
 					} else if(color == 0xFFFFD800) {
 						// Bullet
-						Game.entities.add(new Bullet(xx * 16, yy * 16, 16, 16, Entity.BULLET_EN));
+						Game.entities.add(new Bullet(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.BULLET_EN));
 					} 
 				}
 			}
@@ -81,11 +81,11 @@ public class World {
 	}
 	
 	public void render(Graphics g) {
-		int startX = Camera.x / 16;
-		int startY = Camera.y / 16;
+		int startX = Camera.x / TILE_SIZE;
+		int startY = Camera.y / TILE_SIZE;
 		
-		int finalX = startX + (Game.WIDTH / 16);
-		int finalY = startY + (Game.HEIGHT / 16);
+		int finalX = startX + (Game.WIDTH / TILE_SIZE);
+		int finalY = startY + (Game.HEIGHT / TILE_SIZE);
 		
 		for(int xx = startX; xx <= finalX; xx++) {
 			for(int yy = startY; yy <= finalY; yy++) {
