@@ -16,7 +16,7 @@ public class Entity {
 		
 	protected BufferedImage sprite;
 
-	private int maskx, masky, maskw, maskh;
+	protected int maskx = 0, masky = 0, maskw = 16, maskh = 16;
 
 	public static BufferedImage LIFEPACK_EN = Game.spritesheet.getSprite(6 * 16, 0, 16, 16);
 	public static BufferedImage WEAPON_EN = Game.spritesheet.getSprite(7 * 16, 0, 16, 16);
@@ -25,7 +25,7 @@ public class Entity {
 	public static BufferedImage WEAPON_LEFT = Game.spritesheet.getSprite(7 * 16, 1 * 16, 16, 16);
 	public static BufferedImage WEAPON_UP = Game.spritesheet.getSprite(7 * 16, 2 * 16, 16, 16);
 	public static BufferedImage WEAPON_DOWN = Game.spritesheet.getSprite(7 * 16, 3 * 16, 16, 16);
-	
+
 	public Entity(int x, int y, int width, int heigth, BufferedImage sprite) {
 		setX(x);
 		setY(y);
@@ -101,5 +101,4 @@ public class Entity {
 		g.setColor(color);
 		g.drawRect(x - Camera.x, y - Camera.y, width, height);
 	}
-
 }

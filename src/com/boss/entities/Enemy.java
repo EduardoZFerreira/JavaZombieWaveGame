@@ -1,22 +1,21 @@
 package com.boss.entities;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.boss.main.Game;
-import com.boss.world.Camera;
 import com.boss.world.World;
 
 public class Enemy extends Entity {
 
 	// TODO: Fix flickery animation
 	private double speed = 1;
-	
-	private int maskx = 0, masky = 0, maskw = 16, maskh = 16;
+
 
 	private int health = 100;
+
+	public final int DAMAGE = 1;
 
 	public Enemy(int x, int y, int width, int heigth, BufferedImage sprite) {
 		super(x, y, width, heigth, sprite);
@@ -25,7 +24,6 @@ public class Enemy extends Entity {
 	 public void tick() {
 		if (isTakingDamage()) {
 			health -= calculateDamageTaken();
-
 		}
 	 	checkDeath();
 		if (!isCollidingWithPlayer()) {
@@ -47,14 +45,6 @@ public class Enemy extends Entity {
 						 && !isColliding((int)x, (int)(y - speed))) {
 					 y -= speed;
 				 }
-		 } else {
-			 if(Game.rand.nextInt(100) < 10) {
-				 Game.player.life--;
-			 }
-
-			 if(Game.player.life <= 0) {
-				Game.load();
-			 }
 		 }
 	 }
 	 

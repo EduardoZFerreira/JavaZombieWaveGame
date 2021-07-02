@@ -7,8 +7,6 @@ import com.boss.main.Game;
 import com.boss.world.Camera;
 import com.boss.world.World;
 
-import javax.swing.*;
-
 public class Player extends Entity {
 
 	private boolean right, up, left, down;
@@ -21,11 +19,11 @@ public class Player extends Entity {
 	private final int down_dir = 3;
 	private int dir = right_dir;
 	private final int weaponSpriteOffsetLeftRight = 8;
-	private int weaponSpriteOffsetUpDown = 4;
+	private final int weaponSpriteOffsetUpDown = 4;
 
 	private int frame = 0;
 	private final int maxSprites = 3;
-	private int maxFrames = 5;
+	private final int maxFrames = 5;
 	private int spriteAnimationIndex = 0;
 	private boolean moved = false;
 	private BufferedImage[] rightPlayerSprites;
@@ -35,7 +33,7 @@ public class Player extends Entity {
 	
 	private boolean hasGun = false;
 	
-	public double life = 100;
+	public double health = 100;
 	public int ammo = 0;
 		
 	public Player(int x, int y, int width, int heigth, BufferedImage sprite) {
@@ -58,6 +56,10 @@ public class Player extends Entity {
 	}
 	
 	public void tick() {
+		if (isTakingDamage()) {
+			health -= calculateDamageTaken();
+		}
+		checkDeath();
 		moved = false;
 		move();
 		checkCollisionLifePack();
@@ -137,14 +139,14 @@ public class Player extends Entity {
 	
 	public void checkCollisionLifePack() {
 		for (int i = 0; i < Game.entities.size(); i++) {
-			Entity atual = Game.entities.get(i);
-			if (atual instanceof Lifepack) {
-				if (isColliding(this, atual) && life < 100) {
-					life += 10;
-					if (life > 100) {
-						life = 100;
+			Entity current = Game.entities.get(i);
+			if (current instanceof Lifepack) {
+				if (isColliding(this, current) && health < 100) {
+					health += 10;
+					if (health > 100) {
+						health = 100;
 					}
-					Game.entities.remove(atual);
+					Game.entities.remove(current);
 				}
 			}
 		}
@@ -226,25 +228,10 @@ public class Player extends Entity {
 		if (hasGun && ammo > 0) {
 			ammo--;
 
-			int dx = 0;
-			int dy = 0;
-			int offsetY = 0;
-			int offsetX = 0;
-
-			if (dir == right_dir) {
-				dx = 1;
-				offsetY = width / 2;
-			} else if (dir == left_dir) {
-				dx = -1;
-				offsetY = width / 2;
-			}else if (dir == down_dir) {
-				dy = 1;
-				offsetX = width / 5;
-			} else if (dir == up_dir) {
-				dy = -1;
-				offsetX = width + (WEAPON_UP.getWidth() / 2);
-				offsetY = - WEAPON_UP.getHeight();
-			}
+			int dx = getGunshotXDirection();
+			int dy = getGunshotYDirection();
+			int offsetY = getGunshotOffsetY();
+			int offsetX = getGunshotOffsetX();
 
 			Gunshot gunshot = new Gunshot((int)getX() + offsetX, (int)getY() + offsetY, 3, 3, null, dx, dy);
 			Game.gunshots.add(gunshot);
@@ -255,22 +242,8 @@ public class Player extends Entity {
 		if (hasGun && ammo > 0) {
 			ammo--;
 
-			int offsetY = 0;
-			int offsetX = 0;
-
-			if (dir == right_dir) {
-				offsetY = height / 2;
-				offsetX = width + (weaponSpriteOffsetLeftRight - 3);
-			} else if (dir == left_dir) {
-				offsetY = height / 2;
-				offsetX = - (weaponSpriteOffsetLeftRight);
-
-			}else if (dir == down_dir) {
-				offsetY = height + weaponSpriteOffsetUpDown;
-				offsetX = width / 5;
-			} else if (dir == up_dir) {
-				offsetX = width - weaponSpriteOffsetUpDown;
-			}
+			int offsetY = getGunshotOffsetY();
+			int offsetX = getGunshotOffsetX();
 
 			double angle = Math.atan2(mouseY - (getY() + offsetY - Camera.y), mouseX - (getX() + offsetX - Camera.x));
 			double dx = Math.cos(angle);
@@ -278,6 +251,86 @@ public class Player extends Entity {
 
 			Gunshot gunshot = new Gunshot((int)getX() + offsetX, (int)getY() + offsetY, 3, 3, null, dx, dy);
 			Game.gunshots.add(gunshot);
+		}
+	}
+
+	private int getGunshotOffsetX() {
+		int offset = 0;
+		if (dir == right_dir) {
+			offset = width + (weaponSpriteOffsetLeftRight - 3);
+		} else if (dir == left_dir) {
+			offset = - (weaponSpriteOffsetLeftRight);
+		}else if (dir == down_dir) {
+			offset = width / 5;
+		} else if (dir == up_dir) {
+			offset = width - weaponSpriteOffsetUpDown;
+		}
+		return offset;
+	}
+
+	private int getGunshotOffsetY() {
+		int offset = 0;
+		if (dir == right_dir) {
+			offset = height / 2;
+		} else if (dir == left_dir) {
+			offset = height / 2;
+		}else if (dir == down_dir) {
+			offset = height + weaponSpriteOffsetUpDown;
+		}
+		return offset;
+	}
+
+	private int getGunshotYDirection() {
+		if (dir == down_dir) {
+			return  1;
+		} else if (dir == up_dir) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
+
+	private int getGunshotXDirection() {
+		if (dir == right_dir) {
+			return 1;
+		} else if (dir == left_dir) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
+
+	private int calculateDamageTaken() {
+		int totalDamage = 0;
+		Rectangle self = new Rectangle((int) x + maskx, (int) y + masky, maskw, maskh);
+		for (int i = 0; i < Game.enemies.size(); i++) {
+			Enemy e = Game.enemies.get(i);
+			Rectangle hit = new Rectangle((int)e.getX() + maskx, (int)e.getY() + masky, e.getWidth(), e.getHeigth());
+			if (hit.intersects(self)) {
+				if(Game.rand.nextInt(100) < 10){
+					totalDamage += e.DAMAGE;
+				}
+			}
+		}
+		return totalDamage;
+	}
+
+
+	private boolean isTakingDamage() {
+		Rectangle self = new Rectangle((int) x + maskx, (int) y + masky, maskw, maskh);
+		for (int i = 0; i < Game.enemies.size(); i++) {
+			Enemy e = Game.enemies.get(i);
+			Rectangle hit = new Rectangle((int)e.getX() + maskx, (int)e.getY() + masky, e.getWidth(), e.getHeigth());
+			if (hit.intersects(self)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void checkDeath() {
+		if (health <= 0) {
+			Game.load();
 		}
 	}
 
