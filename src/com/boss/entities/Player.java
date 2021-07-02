@@ -59,7 +59,6 @@ public class Player extends Entity {
 	
 	public void tick() {
 		if (isTakingDamage()) {
-			combo = 0;
 			health -= calculateDamageTaken();
 		}
 		checkDeath();
@@ -311,6 +310,7 @@ public class Player extends Entity {
 			Rectangle hit = new Rectangle((int)e.getX() + maskx, (int)e.getY() + masky, e.getWidth(), e.getHeigth());
 			if (hit.intersects(self)) {
 				if(Game.rand.nextInt(100) < 10){
+					combo = 0;
 					totalDamage += e.DAMAGE;
 				}
 			}
