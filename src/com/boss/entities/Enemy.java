@@ -80,6 +80,9 @@ public class Enemy extends Entity {
 			Gunshot g = Game.gunshots.get(i);
 			Rectangle hit = new Rectangle((int)g.getX() + maskx, (int)g.getY() + masky, g.getWidth(), g.getHeigth());
 			if (hit.intersects(self)) {
+				if (!g.piercingDamage) {
+					Game.gunshots.remove(g);
+				}
 				totalDamage += g.DAMAGE;
 			}
 		}
@@ -102,6 +105,8 @@ public class Enemy extends Entity {
 	 private void checkDeath() {
 		if (health <= 0) {
 			dropLoot();
+			Game.player.combo++;
+			Game.player.score += Game.player.combo > 1 ? 10 * Game.player.combo : 10;
 			Game.enemies.remove(this);
 			Game.entities.remove(this);
 		}

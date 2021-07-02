@@ -16,7 +16,9 @@ public class Gunshot extends Entity{
 	private final int maxRange = 30;
 	private int range = 0;
 
-	public final int DAMAGE = 5;
+	public final int DAMAGE = 35;
+
+	public boolean piercingDamage = false;
 
 	public Gunshot(int x, int y, int width, int height, BufferedImage sprite, double dx, double dy) {
 		super(x, y, width, height, sprite);

@@ -35,6 +35,8 @@ public class Player extends Entity {
 	
 	public double health = 100;
 	public int ammo = 0;
+	public int combo = 0;
+	public int score = 0;
 		
 	public Player(int x, int y, int width, int heigth, BufferedImage sprite) {
 		super(x, y, width, heigth, sprite);		
@@ -57,6 +59,7 @@ public class Player extends Entity {
 	
 	public void tick() {
 		if (isTakingDamage()) {
+			combo = 0;
 			health -= calculateDamageTaken();
 		}
 		checkDeath();

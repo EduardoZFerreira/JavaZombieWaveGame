@@ -9,7 +9,6 @@ import com.boss.main.Game;
 public class UI {
 
 	public void render(Graphics g) {
-		
 		g.setColor(getLifebarColor((int)Game.player.health));
 		g.fillRect(10, 8, 150, 20);
 		
@@ -17,9 +16,18 @@ public class UI {
 
 		g.setFont(new Font("arial", Font.BOLD, 16));
 		g.drawString(getLifeMessage((int)Game.player.health), 15, 24);
-		
+
+		if (Game.player.combo > 1) {
+			g.setFont(new Font("arial", Font.BOLD, 16));
+			g.drawString("x" + Game.player.combo, 15, 42);
+		}
+
 		g.setFont(new Font("arial", Font.BOLD, 16));
 		g.drawString("Ammo: " + Game.player.ammo, (Game.WIDTH * Game.SCALE) - (100), 20);
+
+
+		g.setFont(new Font("arial", Font.BOLD, 16));
+		g.drawString("Score: " + Game.player.score, (Game.WIDTH * Game.SCALE) - (100), 40);
 	}
 	
 	public Color getLifebarColor(int life) {
