@@ -97,18 +97,17 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		Game game = new Game();
 		game.start();
 	}
 	
 	public void tick() {
-		for(int i = 0; i < entities.size(); i++) {
+		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);			
 			e.tick();
 		}
@@ -134,7 +133,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			gunshots.get(i).render(g);
 		}
 		
-		for(int i = 0; i < entities.size(); i++) {
+		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.render(g);
 		}

@@ -15,28 +15,34 @@ public class Enemy extends Entity {
 	private double speed = 1;
 	
 	private int maskx = 0, masky = 0, maskw = 16, maskh = 16;
-	
+
+	private int health = 100;
+
 	public Enemy(int x, int y, int width, int heigth, BufferedImage sprite) {
 		super(x, y, width, heigth, sprite);
-		// TODO Auto-generated constructor stub
 	}
 
-	 public void tick() {	 
-		 if(!isCollidingWithPlayer()) {
-			 if((int)x < Game.player.getX() 
+	 public void tick() {
+		if (isTakingDamage()) {
+			health -= calculateDamageTaken();
+
+		}
+	 	checkDeath();
+		if (!isCollidingWithPlayer()) {
+			 if((int)x < Game.player.getX()
 					 && World.isFree((int)(x + speed), (int)y)
 					 && !isColliding((int)(x + speed), (int)y)) {
 					 x += speed;
-				 } else if((int)x > Game.player.getX() 
+				 } else if((int)x > Game.player.getX()
 						 && World.isFree((int)(x - speed), (int)y)
 						 && !isColliding((int)(x - speed), (int)y)) {
 					 x -= speed;
 				 }
-				 if((int)y < Game.player.getY() 
+				 if((int)y < Game.player.getY()
 					 && World.isFree((int)x, (int)(y + speed))
 					 && !isColliding((int)x, (int)(y + speed))) {
 					 y += speed;
-				 } else if((int)y > Game.player.getY() 
+				 } else if((int)y > Game.player.getY()
 						 && World.isFree((int)x, (int)(y - speed))
 						 && !isColliding((int)x, (int)(y - speed))) {
 					 y -= speed;
@@ -45,7 +51,7 @@ public class Enemy extends Entity {
 			 if(Game.rand.nextInt(100) < 10) {
 				 Game.player.life--;
 			 }
-			 
+
 			 if(Game.player.life <= 0) {
 				Game.load();
 			 }
@@ -76,5 +82,50 @@ public class Enemy extends Entity {
 	 public void render(Graphics g) {
 		 super.render(g);
 	 }
-	 
+
+	 private int calculateDamageTaken() {
+		int totalDamage = 0;
+		Rectangle self = new Rectangle((int) x + maskx, (int) y + masky, maskw, maskh);
+		for (int i = 0; i < Game.gunshots.size(); i++) {
+			Gunshot g = Game.gunshots.get(i);
+			Rectangle hit = new Rectangle((int)g.getX() + maskx, (int)g.getY() + masky, g.getWidth(), g.getHeigth());
+			if (hit.intersects(self)) {
+				totalDamage += g.DAMAGE;
+			}
+		}
+		return totalDamage;
+	 }
+
+
+	private boolean isTakingDamage() {
+		Rectangle self = new Rectangle((int) x + maskx, (int) y + masky, maskw, maskh);
+		for (int i = 0; i < Game.gunshots.size(); i++) {
+			Gunshot g = Game.gunshots.get(i);
+			Rectangle hit = new Rectangle((int)g.getX() + maskx, (int)g.getY() + masky, g.getWidth(), g.getHeigth());
+			if (hit.intersects(self)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	 private void checkDeath() {
+		if (health <= 0) {
+			dropLoot();
+			Game.enemies.remove(this);
+			Game.entities.remove(this);
+		}
+	 }
+
+	 private void dropLoot() {
+		 if (Game.rand.nextInt(100) < 50) {
+		 	int itemToDrop = Game.rand.nextInt(10);
+		 	if (itemToDrop > 5) {
+				Game.entities.add(new Lifepack((int)getX(), (int)getY(), width, height, Entity.LIFEPACK_EN));
+			} else {
+				Game.entities.add(new Bullet((int)getX(), (int)getY(), width, height, Entity.BULLET_EN));
+			}
+		 }
+	 }
+
 }
