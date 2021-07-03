@@ -333,5 +333,4 @@ public class Player extends Entity {
 			Game.load();
 		}
 	}
-
 }

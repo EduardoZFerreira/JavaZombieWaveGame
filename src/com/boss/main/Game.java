@@ -22,7 +22,7 @@ import com.boss.graphics.UI;
 import com.boss.world.Camera;
 import com.boss.world.World;
 
-public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
+public class Game extends Canvas implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -50,17 +50,19 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Player player;
 	
 	public static Random rand;
+
+	public Controls controls;
 	
 	public Game() {
 		rand = new Random();
-		addKeyListener(this);
-		addMouseListener(this);
+
 		initFrame();
 		
 		load();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		
-		
+		controls = new Controls(this);
+		addKeyListener(controls);
+		addMouseListener(controls);
 	}
 	
 	public static void load() {
@@ -107,15 +109,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 	
 	public void tick() {
-		for (int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);			
-			e.tick();
-		}
-		
-		for (int i = 0; i < gunshots.size(); i++) {
-			gunshots.get(i).tick();
-		}
-
+		tickEntities();
 		Camera.followActor(player);
 	}
 	
@@ -125,19 +119,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			createBufferStrategy(3);
 			return;
 		}
+
 		Graphics g = image.getGraphics();
-		g.setColor(new Color(0, 0, 0));
-		g.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
 		world.render(g);
 		
-		for (int i = 0; i < gunshots.size(); i++) {
-			gunshots.get(i).render(g);
-		}
-		
-		for (int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);
-			e.render(g);
-		}
+		renderEntities(g);
 
 		g.dispose();
 		g = bs.getDrawGraphics();
@@ -166,73 +152,26 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		stop();
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		
-	}
+	private void tickEntities() {
+		for (int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
+			e.tick();
+		}
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			player.setRight(true);
-			player.setLeft(false);
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			player.setRight(false);
-			player.setLeft(true);
-		}
-		
-		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			player.setUp(true);
-			player.setDown(false);
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			player.setUp(false);
-			player.setDown(true);
-		}
-		
-		if (e.getKeyCode() == KeyEvent.VK_X) {
-			player.shoot();
+		for (int i = 0; i < gunshots.size(); i++) {
+			gunshots.get(i).tick();
 		}
 	}
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			player.setRight(false);
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			player.setLeft(false);
+	private void renderEntities(Graphics g) {
+		for (int i = 0; i < gunshots.size(); i++) {
+			gunshots.get(i).render(g);
 		}
-		
-		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			player.setUp(false);
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			player.setDown(false);
+
+		for (int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
+			e.render(g);
 		}
-		
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		int mouseX = (e.getX()) / 3;
-		int mouseY = (e.getY()) / 3;
-		player.shootWithMouse(mouseX, mouseY);
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-
-	}
 }
