@@ -26,13 +26,16 @@ public class Entity {
 	public static BufferedImage WEAPON_UP = Game.spritesheet.getSprite(7 * World.TILE_SIZE, 2 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
 	public static BufferedImage WEAPON_DOWN = Game.spritesheet.getSprite(7 * World.TILE_SIZE, 3 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
 
-	public Entity(int x, int y, int width, int heigth, BufferedImage sprite) {
+	protected Game game;
+
+	public Entity(int x, int y, int width, int heigth, BufferedImage sprite, Game game) {
 		setX(x);
 		setY(y);
 		setWidth(width);
 		setHeigth(heigth);
 		setSprite(sprite);
 		setMask(0, 0, width, heigth);
+		this.game = game;
 	}
 
 	public void setMask(int maskX, int maskY, int maskWidth, int maskHeight) {

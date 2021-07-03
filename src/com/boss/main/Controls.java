@@ -7,7 +7,7 @@ import java.awt.event.MouseListener;
 
 public class Controls implements KeyListener, MouseListener {
 
-    private Game game;
+    private final Game game;
 
     public Controls(Game game) {
         this.game = game;

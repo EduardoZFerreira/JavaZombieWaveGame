@@ -38,8 +38,8 @@ public class Player extends Entity {
 	public int combo = 0;
 	public int score = 0;
 		
-	public Player(int x, int y, int width, int heigth, BufferedImage sprite) {
-		super(x, y, width, heigth, sprite);		
+	public Player(int x, int y, int width, int heigth, BufferedImage sprite, Game game) {
+		super(x, y, width, heigth, sprite, game);
 		loadSprites();
 	}
 	
@@ -232,7 +232,7 @@ public class Player extends Entity {
 			int offsetY = getGunshotOffsetY();
 			int offsetX = getGunshotOffsetX();
 
-			Gunshot gunshot = new Gunshot((int)getX() + offsetX, (int)getY() + offsetY, 3, 3, null, dx, dy);
+			Gunshot gunshot = new Gunshot((int)getX() + offsetX, (int)getY() + offsetY, 3, 3, null, dx, dy, game);
 			Game.gunshots.add(gunshot);
 		}
 	}
@@ -248,7 +248,7 @@ public class Player extends Entity {
 			double dx = Math.cos(angle);
 			double dy = Math.sin(angle);
 
-			Gunshot gunshot = new Gunshot((int)getX() + offsetX, (int)getY() + offsetY, 3, 3, null, dx, dy);
+			Gunshot gunshot = new Gunshot((int)getX() + offsetX, (int)getY() + offsetY, 3, 3, null, dx, dy, game);
 			Game.gunshots.add(gunshot);
 		}
 	}
@@ -330,7 +330,7 @@ public class Player extends Entity {
 
 	private void checkDeath() {
 		if (health <= 0) {
-			Game.load();
+			game.load();
 		}
 	}
 }

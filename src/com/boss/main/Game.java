@@ -33,31 +33,28 @@ public class Game extends Canvas implements Runnable {
 	public static final int SCALE = 3;
 	private Thread thread;
 	private boolean isRunning;
-	
+
 	
 	private BufferedImage image;
 	
-	public static List<Entity> entities;
+	public static List<Entity> entities = new ArrayList<>();
 	
-	public static List<Enemy> enemies;
+	public static List<Enemy> enemies = new ArrayList<>();
 	
-	public static List<Gunshot> gunshots;
+	public static List<Gunshot> gunshots =  new ArrayList<>();
 	
 	public static Spritesheet spritesheet;
 	public static World world;
 	public static UI ui;
 	
-	public static Player player;
+	public Player player;
 	
-	public static Random rand;
+	public static Random rand = new Random();
 
 	public Controls controls;
 	
 	public Game() {
-		rand = new Random();
-
 		initFrame();
-		
 		load();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		controls = new Controls(this);
@@ -65,15 +62,12 @@ public class Game extends Canvas implements Runnable {
 		addMouseListener(controls);
 	}
 	
-	public static void load() {
-		entities = new ArrayList<>();
-		enemies = new ArrayList<>();
-		gunshots = new ArrayList<>();
+	public void load() {
 		spritesheet = new Spritesheet("/img/spritesheet.png");
-		ui = new UI();
-		player = new Player(0, 0, World.TILE_SIZE, World.TILE_SIZE, spritesheet.getSprite(2 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE));
+		ui = new UI(this);
+		player = new Player(0, 0, World.TILE_SIZE, World.TILE_SIZE, spritesheet.getSprite(2 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE), this);
 		entities.add(player);
-		world = new World("/img/map.png");
+		world = new World("/img/map.png", this);
 	}
 	
 	public void initFrame() {
@@ -85,7 +79,6 @@ public class Game extends Canvas implements Runnable {
 		frame.pack();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
-		
 	}
 	
 	public synchronized void start() {
@@ -121,8 +114,8 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		Graphics g = image.getGraphics();
+
 		world.render(g);
-		
 		renderEntities(g);
 
 		g.dispose();
@@ -130,7 +123,6 @@ public class Game extends Canvas implements Runnable {
 		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		ui.render(g);
 		bs.show();
-
 	}
 	
 	public void run() {
@@ -150,6 +142,11 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 		stop();
+	}
+
+	public void setPlayerSpawnPoint(double x, double y) {
+		player.setX(x);
+		player.setY(y);
 	}
 
 	private void tickEntities() {
@@ -173,5 +170,4 @@ public class Game extends Canvas implements Runnable {
 			e.render(g);
 		}
 	}
-
 }

@@ -20,8 +20,8 @@ public class Gunshot extends Entity{
 
 	public boolean piercingDamage = false;
 
-	public Gunshot(int x, int y, int width, int height, BufferedImage sprite, double dx, double dy) {
-		super(x, y, width, height, sprite);
+	public Gunshot(int x, int y, int width, int height, BufferedImage sprite, double dx, double dy, Game game) {
+		super(x, y, width, height, sprite, game);
 		this.dx = dx; 
 		this.dy = dy;
 	}

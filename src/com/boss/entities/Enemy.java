@@ -17,8 +17,8 @@ public class Enemy extends Entity {
 
 	public final int DAMAGE = 1;
 
-	public Enemy(int x, int y, int width, int heigth, BufferedImage sprite) {
-		super(x, y, width, heigth, sprite);
+	public Enemy(int x, int y, int width, int heigth, BufferedImage sprite, Game game) {
+		super(x, y, width, heigth, sprite, game);
 	}
 
 	 public void tick() {
@@ -27,20 +27,20 @@ public class Enemy extends Entity {
 		}
 	 	checkDeath();
 		if (!isCollidingWithPlayer()) {
-			 if((int)x < Game.player.getX()
+			 if((int)x < game.player.getX()
 					 && World.isFree((int)(x + speed), (int)y)
 					 && !isColliding((int)(x + speed), (int)y)) {
 					 x += speed;
-				 } else if((int)x > Game.player.getX()
+				 } else if((int)x > game.player.getX()
 						 && World.isFree((int)(x - speed), (int)y)
 						 && !isColliding((int)(x - speed), (int)y)) {
 					 x -= speed;
 				 }
-				 if((int)y < Game.player.getY()
+				 if((int)y < game.player.getY()
 					 && World.isFree((int)x, (int)(y + speed))
 					 && !isColliding((int)x, (int)(y + speed))) {
 					 y += speed;
-				 } else if((int)y > Game.player.getY()
+				 } else if((int)y > game.player.getY()
 						 && World.isFree((int)x, (int)(y - speed))
 						 && !isColliding((int)x, (int)(y - speed))) {
 					 y -= speed;
@@ -50,7 +50,7 @@ public class Enemy extends Entity {
 	 
 	 public boolean isCollidingWithPlayer() {
 		 Rectangle enemyCurrent = new Rectangle((int) x + maskx, (int) y + masky, maskw, maskh);
-		 Rectangle player = new Rectangle((int) Game.player.getX(), (int) Game.player.getY(), World.TILE_SIZE, World.TILE_SIZE);
+		 Rectangle player = new Rectangle((int) game.player.getX(), (int) game.player.getY(), World.TILE_SIZE, World.TILE_SIZE);
 		 return enemyCurrent.intersects(player);
 	 }
 	 
@@ -105,8 +105,8 @@ public class Enemy extends Entity {
 	 private void checkDeath() {
 		if (health <= 0) {
 			dropLoot();
-			Game.player.combo++;
-			Game.player.score += Game.player.combo > 1 ? 10 * Game.player.combo : 10;
+			game.player.combo++;
+			game.player.score += game.player.combo > 1 ? 10 * game.player.combo : 10;
 			Game.enemies.remove(this);
 			Game.entities.remove(this);
 		}
@@ -116,9 +116,9 @@ public class Enemy extends Entity {
 		 if (Game.rand.nextInt(100) < 50) {
 		 	int itemToDrop = Game.rand.nextInt(10);
 		 	if (itemToDrop > 5) {
-				Game.entities.add(new Lifepack((int)getX(), (int)getY(), width, height, Entity.LIFEPACK_EN));
+				Game.entities.add(new Lifepack((int)getX(), (int)getY(), width, height, Entity.LIFEPACK_EN, game));
 			} else {
-				Game.entities.add(new Bullet((int)getX(), (int)getY(), width, height, Entity.BULLET_EN));
+				Game.entities.add(new Bullet((int)getX(), (int)getY(), width, height, Entity.BULLET_EN, game));
 			}
 		 }
 	 }

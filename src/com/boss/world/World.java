@@ -14,8 +14,11 @@ public class World {
 	public static Tile[] tiles;
 	public static int WIDTH, HEIGHT;
 	public static final int TILE_SIZE = 16;
+
+	Game game;
 	
-	public World(String path) {
+	public World(String path, Game game) {
+		this.game = game;
 		try {
 			BufferedImage map = ImageIO.read(getClass().getResource(path));
 			int[] pixels = new int[map.getWidth() * map.getHeight()];
@@ -34,28 +37,25 @@ public class World {
 						// Wall
 						tiles[xx + (yy * WIDTH)] = new WallTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_WALL);
 					} else if(color == 0xFF00137F) {
-						// Player
-						Game.player.setX(xx * TILE_SIZE);
-						Game.player.setY(yy * TILE_SIZE);
+						game.setPlayerSpawnPoint(xx * TILE_SIZE, yy * TILE_SIZE);
 					} else if(color == 0xFFFF0000) {
-						Enemy enemy = new Enemy(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.ENEMY_EN);
+						Enemy enemy = new Enemy(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.ENEMY_EN, game);
 						Game.entities.add(enemy);
 						Game.enemies.add(enemy);
 						
 					}  else if(color == 0xFFFFC85B) {
 						// Weapon
-						Game.entities.add(new Weapon(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.WEAPON_EN));
+						Game.entities.add(new Weapon(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.WEAPON_EN, game));
 						
 					} else if(color == 0xFFFF006E) {
 						// Lifepack
-						Game.entities.add(new Lifepack(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.LIFEPACK_EN));
+						Game.entities.add(new Lifepack(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.LIFEPACK_EN, game));
 					} else if(color == 0xFFFFD800) {
 						// Bullet
-						Game.entities.add(new Bullet(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.BULLET_EN));
+						Game.entities.add(new Bullet(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, Entity.BULLET_EN, game));
 					} 
 				}
 			}
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

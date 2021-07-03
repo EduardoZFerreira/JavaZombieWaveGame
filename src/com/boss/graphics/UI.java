@@ -8,26 +8,32 @@ import com.boss.main.Game;
 
 public class UI {
 
+	Game game;
+
+	public UI(Game game) {
+		this.game = game;
+	}
+
 	public void render(Graphics g) {
-		g.setColor(getLifebarColor((int)Game.player.health));
+		g.setColor(getLifebarColor((int)game.player.health));
 		g.fillRect(10, 8, 150, 20);
 		
 		g.setColor(Color.WHITE);
 
 		g.setFont(new Font("arial", Font.BOLD, 16));
-		g.drawString(getLifeMessage((int)Game.player.health), 15, 24);
+		g.drawString(getLifeMessage((int)game.player.health), 15, 24);
 
-		if (Game.player.combo > 1) {
+		if (game.player.combo > 1) {
 			g.setFont(new Font("arial", Font.BOLD, 16));
-			g.drawString("x" + Game.player.combo, 15, 42);
+			g.drawString("x" + game.player.combo, 15, 42);
 		}
 
 		g.setFont(new Font("arial", Font.BOLD, 16));
-		g.drawString("Ammo: " + Game.player.ammo, (Game.WIDTH * Game.SCALE) - (100), 20);
+		g.drawString("Ammo: " + game.player.ammo, (Game.WIDTH * Game.SCALE) - (100), 20);
 
 
 		g.setFont(new Font("arial", Font.BOLD, 16));
-		g.drawString("Score: " + Game.player.score, (Game.WIDTH * Game.SCALE) - (100), 40);
+		g.drawString("Score: " + game.player.score, (Game.WIDTH * Game.SCALE) - (100), 40);
 	}
 	
 	public Color getLifebarColor(int life) {
