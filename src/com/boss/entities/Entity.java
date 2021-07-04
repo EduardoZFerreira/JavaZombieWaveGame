@@ -18,13 +18,13 @@ public class Entity {
 
 	protected int maskx = 0, masky = 0, maskw = World.TILE_SIZE, maskh = World.TILE_SIZE;
 
-	public static BufferedImage LIFEPACK_EN = Game.spritesheet.getSprite(6 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE);
-	public static BufferedImage WEAPON_EN = Game.spritesheet.getSprite(7 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE);
-	public static BufferedImage BULLET_EN = Game.spritesheet.getSprite(6 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
-	public static BufferedImage ENEMY_EN = Game.spritesheet.getSprite(8 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE);
-	public static BufferedImage WEAPON_LEFT = Game.spritesheet.getSprite(7 * World.TILE_SIZE, 1 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
-	public static BufferedImage WEAPON_UP = Game.spritesheet.getSprite(7 * World.TILE_SIZE, 2 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
-	public static BufferedImage WEAPON_DOWN = Game.spritesheet.getSprite(7 * World.TILE_SIZE, 3 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+	public static BufferedImage LIFEPACK_EN;
+	public static BufferedImage WEAPON_EN;
+	public static BufferedImage BULLET_EN;
+	public static BufferedImage ENEMY_EN;
+	public static BufferedImage WEAPON_LEFT;
+	public static BufferedImage WEAPON_UP;
+	public static BufferedImage WEAPON_DOWN;
 
 	protected Game game;
 
@@ -36,6 +36,7 @@ public class Entity {
 		setSprite(sprite);
 		setMask(0, 0, width, heigth);
 		this.game = game;
+		loadSprites();
 	}
 
 	public void setMask(int maskX, int maskY, int maskWidth, int maskHeight) {
@@ -103,5 +104,15 @@ public class Entity {
 	public void hitboxDebug(Graphics g, Color color, int x, int y, int width, int height) {
 		g.setColor(color);
 		g.drawRect(x - Camera.x, y - Camera.y, width, height);
+	}
+
+	private void loadSprites() {
+		LIFEPACK_EN = game.spritesheet.getSprite(6 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE);
+		WEAPON_EN = game.spritesheet.getSprite(7 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE);
+		BULLET_EN = game.spritesheet.getSprite(6 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+		ENEMY_EN = game.spritesheet.getSprite(8 * World.TILE_SIZE, 0, World.TILE_SIZE, World.TILE_SIZE);
+		WEAPON_LEFT = game.spritesheet.getSprite(7 * World.TILE_SIZE, 1 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+		WEAPON_UP = game.spritesheet.getSprite(7 * World.TILE_SIZE, 2 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+		WEAPON_DOWN = game.spritesheet.getSprite(7 * World.TILE_SIZE, 3 * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
 	}
 }

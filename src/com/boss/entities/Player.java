@@ -50,10 +50,10 @@ public class Player extends Entity {
 		downPlayerSprites = new BufferedImage[maxSprites];
 		
 		for(int i = 0; i < maxSprites; i++) {
-			downPlayerSprites[i] = Game.spritesheet.getSprite(2 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
-			upPlayerSprites[i] = Game.spritesheet.getSprite(3 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
-			rightPlayerSprites[i] = Game.spritesheet.getSprite(4 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
-			leftPlayerSprites[i] = Game.spritesheet.getSprite(5 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+			downPlayerSprites[i] = game.spritesheet.getSprite(2 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+			upPlayerSprites[i] = game.spritesheet.getSprite(3 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+			rightPlayerSprites[i] = game.spritesheet.getSprite(4 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
+			leftPlayerSprites[i] = game.spritesheet.getSprite(5 * World.TILE_SIZE, i * World.TILE_SIZE, World.TILE_SIZE, World.TILE_SIZE);
 		}
 	}
 	
@@ -113,39 +113,39 @@ public class Player extends Entity {
 	
 
 	public void checkCollisionGun() {
-		for (int i = 0; i < Game.entities.size(); i++) {
-			Entity current = Game.entities.get(i);
+		for (int i = 0; i < game.entities.size(); i++) {
+			Entity current = game.entities.get(i);
 			if (current instanceof Weapon) {
 				if (isColliding(this, current)) {
 					hasGun = true;
-					Game.entities.remove(current);
+					game.entities.remove(current);
 				}
 			}
 		}
 	}
 		
 	public void checkCollisionAmmo() {
-		for (int i = 0; i < Game.entities.size(); i++) {
-			Entity current = Game.entities.get(i);
+		for (int i = 0; i < game.entities.size(); i++) {
+			Entity current = game.entities.get(i);
 			if (current instanceof Bullet) {
 				if (isColliding(this, current)) {
 					ammo += 10;
-					Game.entities.remove(current);
+					game.entities.remove(current);
 				}
 			}
 		}
 	}
 	
 	public void checkCollisionLifePack() {
-		for (int i = 0; i < Game.entities.size(); i++) {
-			Entity current = Game.entities.get(i);
+		for (int i = 0; i < game.entities.size(); i++) {
+			Entity current = game.entities.get(i);
 			if (current instanceof Lifepack) {
 				if (isColliding(this, current) && health < 100) {
 					health += 10;
 					if (health > 100) {
 						health = 100;
 					}
-					Game.entities.remove(current);
+					game.entities.remove(current);
 				}
 			}
 		}
@@ -233,7 +233,7 @@ public class Player extends Entity {
 			int offsetX = getGunshotOffsetX();
 
 			Gunshot gunshot = new Gunshot((int)getX() + offsetX, (int)getY() + offsetY, 3, 3, null, dx, dy, game);
-			Game.gunshots.add(gunshot);
+			game.gunshots.add(gunshot);
 		}
 	}
 
@@ -249,7 +249,7 @@ public class Player extends Entity {
 			double dy = Math.sin(angle);
 
 			Gunshot gunshot = new Gunshot((int)getX() + offsetX, (int)getY() + offsetY, 3, 3, null, dx, dy, game);
-			Game.gunshots.add(gunshot);
+			game.gunshots.add(gunshot);
 		}
 	}
 
@@ -302,8 +302,8 @@ public class Player extends Entity {
 	private int calculateDamageTaken() {
 		int totalDamage = 0;
 		Rectangle self = new Rectangle((int) x + maskx, (int) y + masky, maskw, maskh);
-		for (int i = 0; i < Game.enemies.size(); i++) {
-			Enemy e = Game.enemies.get(i);
+		for (int i = 0; i < game.enemies.size(); i++) {
+			Enemy e = game.enemies.get(i);
 			Rectangle hit = new Rectangle((int)e.getX() + maskx, (int)e.getY() + masky, e.getWidth(), e.getHeigth());
 			if (hit.intersects(self)) {
 				if(Game.rand.nextInt(100) < 10){
@@ -318,8 +318,8 @@ public class Player extends Entity {
 
 	private boolean isTakingDamage() {
 		Rectangle self = new Rectangle((int) x + maskx, (int) y + masky, maskw, maskh);
-		for (int i = 0; i < Game.enemies.size(); i++) {
-			Enemy e = Game.enemies.get(i);
+		for (int i = 0; i < game.enemies.size(); i++) {
+			Enemy e = game.enemies.get(i);
 			Rectangle hit = new Rectangle((int)e.getX() + maskx, (int)e.getY() + masky, e.getWidth(), e.getHeigth());
 			if (hit.intersects(self)) {
 				return true;

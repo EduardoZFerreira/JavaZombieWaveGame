@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,6 +25,7 @@ import com.boss.world.World;
 
 public class Game extends Canvas implements Runnable {
 	
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	public static JFrame frame;
@@ -35,17 +37,17 @@ public class Game extends Canvas implements Runnable {
 	private boolean isRunning;
 
 	
-	private BufferedImage image;
+	private final BufferedImage image;
 	
-	public static List<Entity> entities = new ArrayList<>();
+	public List<Entity> entities = new ArrayList<>();
 	
-	public static List<Enemy> enemies = new ArrayList<>();
+	public List<Enemy> enemies = new ArrayList<>();
 	
-	public static List<Gunshot> gunshots =  new ArrayList<>();
+	public List<Gunshot> gunshots =  new ArrayList<>();
 	
-	public static Spritesheet spritesheet;
-	public static World world;
-	public static UI ui;
+	public Spritesheet spritesheet;
+	public World world;
+	public UI ui;
 	
 	public Player player;
 	
@@ -155,6 +157,11 @@ public class Game extends Canvas implements Runnable {
 			e.tick();
 		}
 
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy e = enemies.get(i);
+			e.tick();
+		}
+
 		for (int i = 0; i < gunshots.size(); i++) {
 			gunshots.get(i).tick();
 		}
@@ -167,6 +174,11 @@ public class Game extends Canvas implements Runnable {
 
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
+			e.render(g);
+		}
+
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy e = enemies.get(i);
 			e.render(g);
 		}
 	}

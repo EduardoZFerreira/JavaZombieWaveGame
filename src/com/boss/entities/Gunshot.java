@@ -31,7 +31,7 @@ public class Gunshot extends Entity{
 		y += dy * speed;
 		range++;
 		if (range == maxRange) {
-			Game.gunshots.remove(this);
+			game.gunshots.remove(this);
 		}
 	}
 	

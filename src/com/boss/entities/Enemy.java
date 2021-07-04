@@ -56,8 +56,8 @@ public class Enemy extends Entity {
 	 
 	 public boolean isColliding(int xNext, int yNext) {
 		 Rectangle enemyCurrent = new Rectangle(xNext + maskx, yNext + masky, maskw, maskh);
-		 for (int i = 0; i < Game.enemies.size(); i++) {
-			 Enemy e = Game.enemies.get(i);
+		 for (int i = 0; i < game.enemies.size(); i++) {
+			 Enemy e = game.enemies.get(i);
 			 if (e == this) {
 				 continue;
 			 }
@@ -76,12 +76,12 @@ public class Enemy extends Entity {
 	 private int calculateDamageTaken() {
 		int totalDamage = 0;
 		Rectangle self = new Rectangle((int) x + maskx, (int) y + masky, maskw, maskh);
-		for (int i = 0; i < Game.gunshots.size(); i++) {
-			Gunshot g = Game.gunshots.get(i);
+		for (int i = 0; i < game.gunshots.size(); i++) {
+			Gunshot g = game.gunshots.get(i);
 			Rectangle hit = new Rectangle((int)g.getX() + maskx, (int)g.getY() + masky, g.getWidth(), g.getHeigth());
 			if (hit.intersects(self)) {
 				if (!g.piercingDamage) {
-					Game.gunshots.remove(g);
+					game.gunshots.remove(g);
 				}
 				totalDamage += g.DAMAGE;
 			}
@@ -92,8 +92,8 @@ public class Enemy extends Entity {
 
 	private boolean isTakingDamage() {
 		Rectangle self = new Rectangle((int) x + maskx, (int) y + masky, maskw, maskh);
-		for (int i = 0; i < Game.gunshots.size(); i++) {
-			Gunshot g = Game.gunshots.get(i);
+		for (int i = 0; i < game.gunshots.size(); i++) {
+			Gunshot g = game.gunshots.get(i);
 			Rectangle hit = new Rectangle((int)g.getX() + maskx, (int)g.getY() + masky, g.getWidth(), g.getHeigth());
 			if (hit.intersects(self)) {
 				return true;
@@ -107,18 +107,18 @@ public class Enemy extends Entity {
 			dropLoot();
 			game.player.combo++;
 			game.player.score += game.player.combo > 1 ? 10 * game.player.combo : 10;
-			Game.enemies.remove(this);
-			Game.entities.remove(this);
+			game.enemies.remove(this);
+			game.entities.remove(this);
 		}
 	 }
 
 	 private void dropLoot() {
 		 if (Game.rand.nextInt(100) < 50) {
-		 	int itemToDrop = Game.rand.nextInt(10);
+		 	int itemToDrop = game.rand.nextInt(10);
 		 	if (itemToDrop > 5) {
-				Game.entities.add(new Lifepack((int)getX(), (int)getY(), width, height, Entity.LIFEPACK_EN, game));
+				game.entities.add(new Lifepack((int)getX(), (int)getY(), width, height, Entity.LIFEPACK_EN, game));
 			} else {
-				Game.entities.add(new Bullet((int)getX(), (int)getY(), width, height, Entity.BULLET_EN, game));
+				game.entities.add(new Bullet((int)getX(), (int)getY(), width, height, Entity.BULLET_EN, game));
 			}
 		 }
 	 }
